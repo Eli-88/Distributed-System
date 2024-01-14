@@ -1,6 +1,7 @@
-project(tmp)
-
 cmake_minimum_required(VERSION 3.22)
+
+project(DistributedSystem)
+
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -27,14 +28,16 @@ set(COMPILE_OPTIONS
     -Werror)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(COMMON_LIBS
-        ${COMMON_LIBS}
-        asan)
+    if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+        set(COMMON_LIBS
+            ${COMMON_LIBS}
+            asan)
 
-    set(COMPILE_OPTIONS
-        ${COMPILE_OPTIONS}
-        -fomit-frame-pointer
-        -fsanitize=address)
+        set(COMPILE_OPTIONS
+            ${COMPILE_OPTIONS}
+            -fomit-frame-pointer
+            -fsanitize=address)
+    endif()
 endif()
 
 

@@ -28,8 +28,6 @@ using tcp = asio::ip::tcp;
 using asio::experimental::as_tuple;
 using namespace asio::experimental::awaitable_operators;
 
-constexpr auto use_nothrow_awaitable = as_tuple(asio::use_awaitable);
-
 using Request = http::request<http::string_body>;
 using Response = http::response<http::string_body>;
 
@@ -107,10 +105,10 @@ int main() {
   endpoints.emplace_back(*resolver.resolve("127.0.0.1", "7002"));
   endpoints.emplace_back(*resolver.resolve("127.0.0.1", "7003"));
 
-  std::vector<std::jthread> grp;
+  std::vector<std::thread> grp;
   for (const auto& ep : endpoints) {
     grp.emplace_back(
-        std::jthread([&ctx, ep, request] { Task(ctx, ep, 1000000, request); }));
+        std::thread([&ctx, ep, request] { Task(ctx, ep, 1000000, request); }));
   }
 
   for (auto& t : grp) {
