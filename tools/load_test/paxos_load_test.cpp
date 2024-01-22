@@ -2,8 +2,6 @@
 #include <algorithm>
 #include <boost/accumulators/accumulators.hpp>
 #include <boost/accumulators/statistics.hpp>
-#include <boost/accumulators/statistics/rolling_count.hpp>
-#include <boost/accumulators/statistics/rolling_mean.hpp>
 #include <boost/accumulators/statistics/stats.hpp>
 #include <boost/asio.hpp>
 #include <boost/asio/experimental/as_tuple.hpp>
@@ -79,15 +77,14 @@ void Task(io_context& ctx,
           tcp::endpoint ep,
           int iteration,
           std::string request) {
-  accumulator_set<int, stats<tag::rolling_mean>> acc(
-      tag::rolling_window::window_size = 1);
+  accumulator_set<int64_t, stats<tag::mean>> acc;
 
   for (int i = 0; i < iteration; ++i) {
     acc(SendRequest(ctx, ep, request));
   }
 
-  spdlog::info("rolling mean for {}:{} -> {}ns", ep.address().to_string(),
-               ep.port(), rolling_mean(acc));
+  spdlog::info("mean for {}:{} -> {}ns", ep.address().to_string(), ep.port(),
+               mean(acc));
 }
 
 int main() {
