@@ -45,4 +45,5 @@ add_subdirectory(example)
 
 add_compile_options(${COMPILE_OPTIONS})
 add_subdirectory(paxos)
+add_subdirectory(raft)
 add_subdirectory(tools/load_test)
