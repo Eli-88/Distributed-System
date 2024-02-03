@@ -7,7 +7,7 @@ namespace util {
 TcpClient::TcpClient(EventLoop* loop,
                      std::string_view host,
                      unsigned short port,
-                     std::function<void(TcpStream&&)> handler)
+                     std::function<void(TcpStream)> handler)
     : loop_{loop}, handler_{handler} {
   conn_ = TcpSocket::Create();
   conn_.Connect(host, port);

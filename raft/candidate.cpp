@@ -163,7 +163,7 @@ bool Candidate::RunElection() {
 
 void Candidate::BroadcastToPeer(std::string_view request, Addr addr) try {
   SendToClient(addr, request,
-               [self = shared_from_this(), this](util::TcpStream&& stream) {
+               [self = shared_from_this(), this](util::TcpStream stream) {
                  try {
                    const Message msg = MessageDecoder::Decode(stream.Text());
                    std::visit(*this, msg);

@@ -16,7 +16,7 @@ class TcpClient : public std::enable_shared_from_this<TcpClient>,
       EventLoop* loop,
       std::string_view host,
       unsigned short port,
-      std::function<void(TcpStream&&)> handler) {
+      std::function<void(TcpStream)> handler) {
     auto client = std::make_shared<TcpClient>(loop, host, port, handler);
     client->Init();
     return client;
@@ -27,7 +27,7 @@ class TcpClient : public std::enable_shared_from_this<TcpClient>,
       EventLoop* loop,
       std::string_view host,
       unsigned short port,
-      std::function<void(TcpStream&&)> handler,
+      std::function<void(TcpStream)> handler,
       const Alloc& allocator) {
     auto client =
         std::allocate_shared<TcpClient>(allocator, loop, host, port, handler);
@@ -38,7 +38,7 @@ class TcpClient : public std::enable_shared_from_this<TcpClient>,
   TcpClient(EventLoop* loop,
             std::string_view host,
             unsigned short port,
-            std::function<void(TcpStream&&)> handler);
+            std::function<void(TcpStream)> handler);
 
   void Init();
   bool Send(std::string_view msg);
@@ -48,7 +48,7 @@ class TcpClient : public std::enable_shared_from_this<TcpClient>,
 
  private:
   EventLoop* loop_;
-  std::function<void(TcpStream&&)> handler_;
+  std::function<void(TcpStream)> handler_;
   TcpSocket conn_;
   std::array<std::byte, TcpStream::kMaxLength> buffer_{};
 };

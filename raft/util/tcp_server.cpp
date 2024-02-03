@@ -7,7 +7,7 @@ namespace util {
 TcpServer::TcpServer(EventLoop& loop,
                      std::string_view host,
                      unsigned short port,
-                     std::function<void(TcpStream&&)> handler)
+                     std::function<void(TcpStream)> handler)
     : loop_{loop}, handler_{handler} {
   server_socket_ = TcpSocket::Create();
   server_socket_.Bind(host, port);

@@ -15,7 +15,7 @@ class Raft : private boost::noncopyable, public StateMediator {
  public:
   Raft(Addr local_addr, std::vector<Addr> peers);
 
-  void OnRequest(util::TcpStream&& stream);
+  void OnRequest(util::TcpStream stream);
 
   void SwitchToFollower() override;
   void SwitchToLeader(const Addr& addr) override;

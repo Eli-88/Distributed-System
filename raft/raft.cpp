@@ -14,7 +14,7 @@ Raft::Raft(Addr local_addr, std::vector<Addr> peers)
   vote_manager_->Start();
 }
 
-void Raft::OnRequest(util::TcpStream&& stream) try {
+void Raft::OnRequest(util::TcpStream stream) try {
   const Message decoded_msg = MessageDecoder::Decode(stream.Text());
   const std::string response = state_->OnRequest(decoded_msg);
   stream.Send(response);

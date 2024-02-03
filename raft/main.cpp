@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
   Raft raft(local_addr, peers);
 
   util::TcpServer server(GetLoop(), local_addr.host, local_addr.port,
-                         [&raft](util::TcpStream&& stream) {
+                         [&raft](util::TcpStream stream) {
                            return raft.OnRequest(std::move(stream));
                          });
 

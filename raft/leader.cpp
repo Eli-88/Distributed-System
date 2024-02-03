@@ -89,7 +89,7 @@ std::string Leader::operator()(const InvalidMsg&) {
 }
 
 void Leader::BroadcastToPeer(const Addr& addr, std::string_view msg) try {
-  SendToClient(addr, msg, [](util::TcpStream&& stream) { stream.Close(); });
+  SendToClient(addr, msg, [](util::TcpStream stream) { stream.Close(); });
 } catch (const std::exception& ex) {
   spdlog::error("leader unable to broadcast to {}:{}", addr.host, addr.port);
 }

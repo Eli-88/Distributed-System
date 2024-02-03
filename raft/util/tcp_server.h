@@ -19,14 +19,14 @@ class TcpServer : private boost::noncopyable {
   TcpServer(EventLoop& loop,
             std::string_view host,
             unsigned short port,
-            std::function<void(TcpStream&&)> handler);
+            std::function<void(TcpStream)> handler);
 
  private:
   EventLoop& loop_;
   std::array<std::byte, TcpStream::kMaxLength> buffer_{};
 
   TcpSocket server_socket_;
-  std::function<void(TcpStream&&)> handler_;
+  std::function<void(TcpStream)> handler_;
 
   void OnAccept();
   void OnRequest(TcpSocket conn);

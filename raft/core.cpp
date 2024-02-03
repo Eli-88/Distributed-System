@@ -10,7 +10,7 @@ class CoreTcpClient {
   CoreTcpClient(util::EventLoop& loop) : loop_{loop} {}
 
   void Register(util::TcpSocket conn,
-                const std::function<void(util::TcpStream&&)> cb) {
+                const std::function<void(util::TcpStream)> cb) {
     loop_.Register(conn, [conn = std::move(conn), &loop = loop_,
                           cb = std::move(cb)] {
       std::array<std::byte, util::TcpStream::kMaxLength> recv_buffer{};
@@ -23,8 +23,8 @@ class CoreTcpClient {
         return;
       }
 
-      cb(std::move(util::TcpStream(
-          std::span<std::byte>(recv_buffer.data(), byte_recv), &loop, conn)));
+      cb(util::TcpStream(std::span<std::byte>(recv_buffer.data(), byte_recv),
+                         &loop, conn));
     });
   }
 
@@ -41,7 +41,7 @@ util::EventLoop& GetLoop() {
 
 void SendToClient(Addr addr,
                   std::string_view msg,
-                  std::function<void(util::TcpStream&&)> callback) {
+                  std::function<void(util::TcpStream)> callback) {
   util::TcpSocket conn = util::TcpSocket::Create();
   conn.Connect(addr.host, addr.port);
 

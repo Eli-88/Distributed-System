@@ -11,6 +11,6 @@ util::EventLoop& GetLoop();
 
 void SendToClient(Addr addr,
                   std::string_view msg,
-                  std::function<void(util::TcpStream&&)> callback);
+                  std::function<void(util::TcpStream)> callback);
 
 void CallAfter(int delay_ms, const std::function<void()>& handle);
